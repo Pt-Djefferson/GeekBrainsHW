@@ -1,112 +1,68 @@
- 
 
 def work_with_phonebook():
-	
+    choice = show_menu()
 
-    choice=show_menu()
+    phone_book = read_txt('phones.txt')
 
-    phone_book=read_txt('phon.txt')
+    while (choice != 5):
 
-    while (choice!=7):
-
-        if choice==1:
+        if choice == 1:
             print_result(phone_book)
-        elif choice==2:
-            last_name=input('lastname ')
-            print(find_by_lastname(phone_book,last_name))
-        elif choice==3:
-            last_name=input('lastname ')
-            new_number=input('new  number ')
-            print(change_number(phone_book,last_name,new_number))
-	    	
-        elif choice==4:
-            lastname=input('lastname ')
-            print(delete_by_lastname(phone_book,lastname))
-        elif choice==5:
-            number=input('number ')
-            print(find_by_number(phone_book,number))
-        elif choice==6:
-            user_data=input('new data ')
-            add_user(phone_book,user_data)
-            write_txt('phonebook.txt',phone_book)
+        elif choice == 2:
+            last_name = input('Ищем по фамилии: ')
+            print(find_by_lastname(phone_book, last_name))
+        elif choice == 3:
+            number = input('Ищем по номеру: ')
+            print(find_by_number(phone_book, number))
+        elif choice == 4:
+            other_book_filename = input('Введите имя другого справочника:  ')
+            print(add_from_other_book(phone_book, other_book_filename))
 
-        choice=show_menu()
+        choice = show_menu()
 
 
 def show_menu():
     print("""
-          \nВыберите необходимое действие:\n
-          1. Отобразить весь справочник\n
-          2. Найти абонента по фамилии\n
-          3. Найти абонента по номеру телефона\n
-          4. Добавить абонента в справочник\n
-		изменить данные
-          5. Сохранить справочник в текстовом формате\n
-          6. Закончить работу""")
-    choice = int(input())
+Меню телефонного справочника:
+1. Отобразить весь справочник
+2. Найти абонента по фамилии
+3. Найти абонента по номеру телефона
+4. Добавить абонента из другого справочника
+5. Закончить работу""")
+    choice = int(input('Выберите необходимое действие: '))
     return choice
 
+def print_result(phone_list):
+    print('\n=====   Список абонентов:   =====')
+    print("{:<6} {:<23} {:<8} {:<15}".format('№','Фамилия, Имя','Телефон','Описание'))
+    for (i, item) in enumerate(phone_list, start=1):
+        print("{:<6} {:<25} {:<6} {:<15}".format(i, item['Фамилия'].strip() + " " + item['Имя'].strip(), item['Телефон'].strip(), item['Описание'].strip()))
+
+def find_by_lastname(phone_list,last_name):
+    pass
+
+def find_by_number(phone_list,number):
+    pass
+
+def add_from_other_book(phone_list,other_book_filename):
+    pass
 
 def read_txt(filename): 
-
     phone_book=[]
-
-    fields=  ['Фамилия', 'Имя', 'Телефон', 'Описание']
-
-    #line.split(',') = [Питонов,    Антон,     '777',    'умеет в Питон']
-
+    fields = ['Фамилия', 'Имя', 'Телефон', 'Описание']
     with open(filename,'r',encoding='utf-8') as phb:
         for line in phb:
-           record = dict(zip(fields, line.split(',')))
-			#dict(( (фамилия,Иванов),(имя, Точка),(номер,8928) ))
-        phone_book.append(record)	
-
+            if line.strip() == "": continue
+            record = dict(zip(fields, line.split(',')))
+            phone_book.append(record)
     return phone_book
 
-
-
-
-
-
-
-
 def write_txt(filename , phone_book):
-
     with open(filename,'w',encoding='utf-8') as phout:
-
         for i in range(len(phone_book)):
-
-            s=''
+            s = ''
             for v in phone_book[i].values():
-
                 s = s + v + ','
-
             phout.write(f'{s[:-1]}\n')
 
 work_with_phonebook()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
